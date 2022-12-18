@@ -1,0 +1,36 @@
+
+### Post
+ POST http://localhost:8080/loginparambasedatos
+Content-Type: application/json
+
+{
+  "server":"localhost",
+  "userName": "sa",
+  "password": "Sasql2008",
+  "instanceName": "sql2008r2",
+  "port":1433,
+  "database": "CubalubGranma"
+}
+### Crear Provincia
+
+POST http://localhost:8081/crearprovincias
+  Content-Type: application/json
+
+[
+  {
+    "ProvCod":14,
+    "ProvNombre":"Provincia10"
+},{
+  "ProvCod":40,
+    "ProvNombre":"Provincia10"
+},
+{"ProvCod":41,
+    "ProvNombre":"Provincia10"
+    }
+]
+
+
+
+
+
+

@@ -1,0 +1,7 @@
+configurar proxy
+  npm config rm https-proxy 
+  npm config rm http 
+  npm config set proxy "http://your-proxy.com:80"
+
+ npm run build: compilar el proyecto para produccion
+ npm run start: iniciar proyecto en produccion

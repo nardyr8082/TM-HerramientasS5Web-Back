@@ -15,10 +15,7 @@ var localStorage = new _nodeLocalstorage.LocalStorage('./scratch');
 var connection;
 var Parametros = function Parametros(req, res) {
   if (req) {
-
-
- var parametros = req.body;
-    
+var parametros = req.body;
 var dbSettings = {
       server: parametros['server'],
       authentication: {

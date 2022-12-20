@@ -9,6 +9,7 @@ var _express = _interopRequireDefault(require("express"));
 var _config = _interopRequireDefault(require("./config"));
 var _parametrosFrontBD = _interopRequireDefault(require("./routes/parametrosFrontBD.routes"));
 var _nomencladores = _interopRequireDefault(require("./routes/nomencladores.routes"));
+var _gestuseradmin = _interopRequireDefault(require("./routes/getuseradmin.routes"));
 // Configuracion basica del servidor
 
 //Rutas
@@ -30,5 +31,6 @@ app.use(_express["default"].urlencoded({
 app.use(cors());
 app.use(_parametrosFrontBD["default"]);
 app.use(_nomencladores["default"]);
+app.use(_gestuseradmin["default"]);
 var _default = app;
 exports["default"] = _default;

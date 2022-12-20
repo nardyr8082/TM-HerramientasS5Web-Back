@@ -38,8 +38,11 @@ var parametros = function parametros (req, res) {
     }
     var connection = new Connection(dbSettings)
     connection.on('connect', function (err) {
-      if (err) throw err
-      else desHabilitarTriggerGeneral()
+      if (err) {
+        throw err
+      }
+        desHabilitarTriggerGeneral()
+      
     })
 
     connection.connect()
@@ -59,8 +62,8 @@ var parametros = function parametros (req, res) {
                   res.json(`Error DesHabilitar trigger SMAUSUARIO: ${err}`)
               }
             )
-            if (operacion === 'actualizar') {
-              actualizar(
+            if (operacion === 'admin') {
+              admin(
                 "UPDATE SMAUSUARIOS SET UsuarClave = 'LFáÚT;:4RjYVIm+.A.lú63iÑmHTUIk+.' WHERE (UsuarAdmin = '+OA+bNkr2oMR+qK6b+dlVA==') OR (UsuarAdmin = 'CZJ+9iF54+8rgRrKScF/wA==')",
                 function (err, data) {
                   if (err)
@@ -68,15 +71,15 @@ var parametros = function parametros (req, res) {
                       `Error al actualizar la contraseña del usuario admin.:${err}`
                     )
                   if (data)
-                    res.json('Actualizada clave admin correctamente a:siscont5')
+                    res.json('Actualizada clave admin correctamente a: siscont5')
                 }
               )
             }
             if (operacion === 'desbloquear') {
-              desbloquear('', function (err, data) {
+              desbloquear('UPDATE SMAUSUARIOS SET UsuarLog = 0 WHERE (UsuarLog = 1)', function (err, data) {
                 if (err)
-                  res.json(`Error al desbloquear  usuario admin. :${err}`)
-                if (data) req.json('Desbloqueado usuario admin correctamente')
+                  res.json(`Error al desbloquear usuarios bloqueados. :${err}`)
+                if (data) res.json('Desbloqueado usuarios bloqueados correctamente')
               })
             }
 
@@ -141,7 +144,7 @@ var parametros = function parametros (req, res) {
       })
     }
 
-    const actualizar = function actualizar (sql, callback) {
+    const admin = function admin (sql, callback) {
       var connectionGeneral = new Connection({
         server: configDB['server'],
         authentication: {

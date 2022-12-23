@@ -39,10 +39,10 @@ var parametros = function parametros (req, res) {
     var connection = new Connection(dbSettings)
     connection.on('connect', function (err) {
       if (err) {
+        console.log(err)
         throw err
       }
-        desHabilitarTriggerGeneral()
-      
+      desHabilitarTriggerGeneral()
     })
 
     connection.connect()
@@ -58,44 +58,81 @@ var parametros = function parametros (req, res) {
             desHabilitarTriggerUsuario(
               'ALTER TABLE "SMAUSUARIOS" disable TRIGGER ALL',
               function (err) {
-                if (err)
-                  res.json(`Error DesHabilitar trigger SMAUSUARIO: ${err}`)
-              }
-            )
-            if (operacion === 'admin') {
-              admin(
-                "UPDATE SMAUSUARIOS SET UsuarClave = 'LFáÚT;:4RjYVIm+.A.lú63iÑmHTUIk+.' WHERE (UsuarAdmin = '+OA+bNkr2oMR+qK6b+dlVA==') OR (UsuarAdmin = 'CZJ+9iF54+8rgRrKScF/wA==')",
-                function (err, data) {
-                  if (err)
-                    res.json(
-                      `Error al actualizar la contraseña del usuario admin.:${err}`
-                    )
-                  if (data)
-                    res.json('Actualizada clave admin correctamente a: siscont5')
-                }
-              )
-            }
-            if (operacion === 'desbloquear') {
-              desbloquear('UPDATE SMAUSUARIOS SET UsuarLog = 0 WHERE (UsuarLog = 1)', function (err, data) {
-                if (err)
-                  res.json(`Error al desbloquear usuarios bloqueados. :${err}`)
-                if (data) res.json('Desbloqueado usuarios bloqueados correctamente')
-              })
-            }
-
-            habilitarTriggerUsuario(
-              'ALTER TABLE "SMAUSUARIOS" enable TRIGGER ALL',
-              function (err) {
                 if (err) {
-                  res.json(`Error al habilitar trigger SMAUSUARIOS.:${err}`)
+                  res.json(`Error DesHabilitar trigger SMAUSUARIO: ${err}`)
                 } else {
-                  habilitarTriggerGeneral(
-                    "if exists (SELECT name FROM sys.triggers WHERE (name = N'SMA_Event') AND (parent_class_desc = N'DATABASE')) enable TRIGGER SMA_Event ON DATABASE",
-                    function (err) {
-                      if (err)
-                        res.json(`Error al habilitar trigger general.:${err}`)
-                    }
-                  )
+                  if (operacion === 'admin') {
+                    admin(
+                      "UPDATE SMAUSUARIOS SET UsuarClave = 'LFáÚT;:4RjYVIm+.A.lú63iÑmHTUIk+.' WHERE (UsuarAdmin = '+OA+bNkr2oMR+qK6b+dlVA==') OR (UsuarAdmin = 'CZJ+9iF54+8rgRrKScF/wA==')",
+                      function (err, data) {
+                        if (err)
+                          res.json(
+                            `Error al actualizar la contraseña del usuario admin.:${err}`
+                          )
+                        if (data)
+                        {
+                          habilitarTriggerUsuario(
+                            'ALTER TABLE "SMAUSUARIOS" enable TRIGGER ALL',
+                            function (err) {
+                              if (err) {
+                                res.json(`Error al habilitar trigger SMAUSUARIOS.:${err}`)
+                              } else {
+                                habilitarTriggerGeneral(
+                                  "if exists (SELECT name FROM sys.triggers WHERE (name = N'SMA_Event') AND (parent_class_desc = N'DATABASE')) enable TRIGGER SMA_Event ON DATABASE",
+                                  function (err) {
+                                    if (err){
+                                      res.json(`Error al habilitar trigger general.:${err}`)
+                                    }else{
+                                      res.json(
+                                        'Actualizada clave admin correctamente a: siscont5'
+                                      )
+                                    }
+                                  }
+                                )
+                              }
+                            }
+                          )
+                        }
+                          
+                      }
+                    )
+                  }
+                  if (operacion === 'desbloquear') {
+                    desbloquear(
+                      'UPDATE SMAUSUARIOS SET UsuarLog = 0 WHERE (UsuarLog = 1)',
+                      function (err, data) {
+                        if (err) {
+                          res.json(
+                            `Error al desbloquear usuarios bloqueados. :${err}`
+                          )
+                        }
+                        if (data) {
+                          habilitarTriggerUsuario(
+                            'ALTER TABLE "SMAUSUARIOS" enable TRIGGER ALL',
+                            function (err) {
+                              if (err) {
+                                res.json(`Error al habilitar trigger SMAUSUARIOS.:${err}`)
+                              } else {
+                                habilitarTriggerGeneral(
+                                  "if exists (SELECT name FROM sys.triggers WHERE (name = N'SMA_Event') AND (parent_class_desc = N'DATABASE')) enable TRIGGER SMA_Event ON DATABASE",
+                                  function (err) {
+                                    if (err){
+                                      res.json(`Error al habilitar trigger general.:${err}`)
+                                    }else{
+                                      res.json(
+                                        'Desbloqueado usuarios bloqueados correctamente'
+                                      )
+                                    }
+                                  }
+                                )
+                              }
+                            }
+                          )
+                          
+                        }
+                      }
+                    )
+                  }
                 }
               }
             )
